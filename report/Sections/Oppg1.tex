@@ -1,0 +1,15 @@
+\section{Task 1}
+We wish to look at reaction-diffusion equations, which have the form
+$$ u_t = \mu u_{xx} + f(u)$$
+where $\mu$ is a positive constant. We also assume that the reaction term, $f(u)$ is non-stiff, such that explicit methods can be used to solve $u_t = f(u)$.
+We discretize the domain in both space and time, such that $x_m = x_0 + m*h, \quad t_n = t_0 + n*k$.
+A scheme based on forward and backward Euler, together with a central difference in space, could be:
+$$ \frac{1}{k}\nabla_tU_{m}^{n+1}=\frac{\mu}{h^2}\delta_x^2U_{m}^{n+1}+f(U_{m}^{n} )$$
+which can be rewritten to 
+$$U_{m}^{n+1} = U_{m}^{n} + r (U_{m+1}^{n+1}-2U_{m}^{n+1}+U_{m-1}^{n+1}) + kf(U_{m}^{n}), \quad r = \mu\frac{k}{h^2}$$
+Time dependent PDEs should be solved using implicit methods. This requires solving a linear system for each step. We wish to avoid this, by using an implicit method for the diffusion term and an explicit method for the reaction term.
+This could be solved be using the scheme
+\begin{align*}
+    U_{m}^{*} =& U_{m}^{n} +\frac{r}{2}(\delta_x^2 U_{m}^{*} + \delta_x^2 U_{m}^{n} ) + kf(U_{m}^{n}) \\
+    U_{m}^{n+1} =& U_{m}^{*} + \frac{k}{2}(f(U_{m}^{*}) - f(U_{m}^{n}))
+\end{align*}
