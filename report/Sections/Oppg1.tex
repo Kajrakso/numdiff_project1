@@ -1,6 +1,9 @@
 \section{Task 1}
 We wish to look at reaction-diffusion equations, which have the form
-$$ u_t = \mu u_{xx} + f(u)$$
+\begin{equation}
+    \label{eq:original_eq}
+     u_t = \mu u_{xx} + f(u)
+\end{equation}
 where $\mu$ is a positive constant. We also assume that the reaction term, $f(u)$ is non-stiff, such that explicit methods can be used to solve $u_t = f(u)$.
 We discretize the domain in both space and time, such that $x_m = x_0 + m*h, \quad t_n = t_0 + n*k$.
 A scheme based on forward and backward Euler, together with a central difference in space, could be:
@@ -110,3 +113,34 @@ We summarize our discussion in a theorem.
     The scheme is unconditionally stable.
 \end{theorem}
 
+
+
+\begin{theorem}
+    \label{consistent}
+    Given that $u$ is sufficiently smooth and $f$ is of the form $f(u)=au, a\in \mathbb{R}$, the local truncation error of the method is $\mathcal{O}(k^2 + h^2).$
+\end{theorem}
+
+\begin{proof}
+    We rewrite \ref{eq:scheme_explicit_eq} to be an explicit equation for $U_m^*$
+    $$ U_{m}^{*}= \frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}}.$$
+    This is then substituted into \ref{eq:scheme_implicit_eq} to remove $U_{m}^{*}$ from the equation
+    $$\frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}} = (1+ka)U_{m}^{n}+\frac{r}{2}\left( \frac{\delta_x^2(U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n})}{1+\frac{ka}{2}}  + \delta_x^2 U_{m}^{n}\right).$$
+    We then multiply by $(1+\frac{ka}{2})$ and rearrange the terms to
+    $$ U_{m}^{n+1}=(1+ ka + \frac{k²a²}{2})U_{m}^{n} + \frac{r}{2}\left((1+ka)\delta_x^2U_{m}^{n} +\delta_x^2U_{m}^{n+1}\right).$$
+    Then the approximations are replaced by $u$ and the local truncation error is therefore introduced
+    $$ k\tau_m^n + u_{m}^{n+1} = (1+ ka + \frac{k²a²}{2})u_{m}^{n} + \frac{r}{2}\left((1+ka)\delta_x^2u_{m}^{n} +\delta_x^2u_{m}^{n+1}\right).$$
+    We then evaluate??? the central differences and Taylor expand around $u_{m}^{n}$
+    \begin{align*}
+        k \tau_m^n =& \left( 1 + ka +\frac{k^2a^2}{2}\right)u_{m}^{n} - u_{m}^{n+1}+\frac{\mu k}{2h^2} \left(h^2\partial_x^2 u_{m}^{n+1} + \left( 1+ka \right) h^2 \partial_x^2u_{m}^{n} + \mathcal{O}(h^4)\right) \\
+        k \tau_m^n =& \left( 1 + ka + \frac{k^2a^2}{2}\right)u_{m}^{n} - u_{m}^{n} - k \partial_tu_{m}^{n} - \frac{k^2}{2} \partial_t^2 u_{m}^{n} + \mathcal{O}(k^3)  \\
+        +& \frac{\mu k}{2}\left( \partial_x^2 \left( u_{m}^{n} + k \partial_t u_{m}^{n} + \mathcal{O}(k^2)\right) + \left( 1 + ka\right) \partial_x^2  u_{m}^{n} \right) + \mathcal{O}(kh^2).
+    \end{align*}
+    This expression is then divided by $k$ and rearranged to 
+    $$\tau_m^n = a u_{m}^{n} - \partial_tu_{m}^{n} + 2 \frac{\mu}{2}\left( \partial_x^2 u_{m}^{n}\right) +  \frac{ka^2}{2}u_{m}^{n}  - \frac{k}{2} \partial_t^2 u_{m}^{n} + \frac{\mu }{2}\left( k \partial_x^2 \partial_t u_{m}^{n}  + ka \partial_x^2  u_{m}^{n} \right) + \mathcal{O}(h^2 + k^2).$$
+    The first three terms are simply \ref{eq:original_eq} with all terms moved to the right hand side. Some terms can also be rewritten using \ref{eq:original_eq}, yielding
+    \begin{align*}
+        \tau_m^n = \frac{ka^2}{2}u_{m}^{n}  - \frac{k}{2} \partial_t^2 u_{m}^{n} +& \frac{k}{2} \partial_t \left(\partial_t u_{m}^{n}   - au_{m}^{n} \right) + \frac{ka}{2} \left( \partial_t  u_{m}^{n} - a u_{m}^{n}\right)+ \mathcal{O}(h^2 + k^2) \\
+        \tau_m^n = \frac{ka^2}{2}u_{m}^{n} - \frac{ka^2}{2}u_{m}^{n}  -& \frac{k}{2} \partial_t^2 u_{m}^{n} + \frac{k}{2} \partial_t^2 u_{m}^{n} - \frac{ak}{2} \partial_t u_{m}^{n} + \frac{ka}{2} \partial_t  u_{m}^{n}+ \mathcal{O}(h^2 + k^2) \\
+        \tau_m^n =& \mathcal{O}(h^2 + k^2) \\
+    \end{align*}
+\end{proof}
