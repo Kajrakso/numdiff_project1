@@ -190,6 +190,7 @@ A bound on \( \rho(C) = \max_{m} \lvert \Delta_m \rvert \) is found:
 We summarize our discussion in a theorem.
 
 \begin{theorem}
+    \label{stability}
     The scheme is unconditionally stable.
 \end{theorem}
 
@@ -200,7 +201,7 @@ We summarize our discussion in a theorem.
     $$\delta_x^2u_{m}^{n} = h^2\partial_x^2 u_{m}^{n} + \mathcal{O}(h^4)$$
 \end{lemma}
 \begin{proof}
-    left as en exercise to the reader.
+    left as an exercise to the reader.
 \end{proof}
 
 \begin{theorem}
@@ -233,6 +234,13 @@ We summarize our discussion in a theorem.
     \end{align*}
 \end{proof}
 
+\begin{theorem}
+    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the method is convergent.
+\end{theorem}
+
+\begin{proof}
+    The method is stable, (\ref{stability}), and consistent, (\ref{consistent}), and therefore convergent by Lax' equivalence theorem.
+\end{proof}
 \subsection{Numerical experiments}
 
 We use the following test equation:
