@@ -1,17 +1,76 @@
 \section{Task 1}
+
+\subsection{Some equation lol}
+
 We wish to look at reaction-diffusion equations, which have the form
 \begin{equation}
     \label{eq:original_eq}
      u_t = \mu u_{xx} + f(u)
 \end{equation}
-where $\mu$ is a positive constant. We also assume that the reaction term, $f(u)$ is non-stiff, such that explicit methods can be used to solve $u_t = f(u)$.
-We discretize the domain in both space and time, such that $x_m = x_0 + m*h, \quad t_n = t_0 + n*k$.
-A scheme based on forward and backward Euler, together with a central difference in space, could be:
-$$ \frac{1}{k}\nabla_tU_{m}^{n+1}=\frac{\mu}{h^2}\delta_x^2U_{m}^{n+1}+f(U_{m}^{n} )$$
+where $\mu$ is a positive constant.
+We also assume that the reaction term,
+$f(u)$, is a linear function in \( u \).
+That is, it can be written as \( f(u) = au \),
+for some constant \( 0 \neq a \in \mathbb{R} \).
+Explicit methods can be used to solve $u_t = f(u)$.
+
+We solve the equation on
+the grid \( (x, t) \in [0, 1] \times [0, 1] \)
+with boundary conditions given by functions
+\( f, g_1 \) and \( g_2 \).
+\begin{align*}
+  u(0, x) &= f(x) \\
+  u(t, 0) &= g_1(t) \\
+  u(t, 1) &= g_2(t)
+\end{align*}
+
+\subsection{Discretization}
+
+We discretize the domain in both space and time,
+such that $x_m = mh$ and $t_n = nk$,
+where \( m = 0, 1, \dots, M + 1\) and \( n = 0, 1, \dots, N \)
+for some positive constants \( M, N \).
+
+\begin{figure}[!h]
+\centering
+\label{fig:disc}
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (4, 4);
+
+  \draw[thick,->] (0,0) -- (4.5,0) node[anchor=north west] {x};
+  \draw[thick,->] (0,0) -- (0,4.5) node[anchor=south east] {t};
+
+  \draw[very thin] (0,4) node[anchor=east] {\( 1 \)} -- (4,4) ; 
+  \draw[very thin] (4,0) node[anchor=north] {\( 1 \)} -- (4,4) ; 
+
+    \node[blue,rectangle] at (2, -0.5) {\( f(x) \)};
+    \draw[blue, thick] (0,0) -- (4,0); 
+
+    \node[red,rectangle] at (-0.5,2) {\( g_1(t) \)};
+    \node[red,rectangle] at (4.5,2) {\( g_2(t) \)};
+    \draw[red, thick] (0,0) -- (0,4); 
+    \draw[red, thick] (4,0)  -- (4,4); 
+
+    \node at (2.5,2.3) {\tiny \( (x_2, t_2) \)};
+    \node at (2,2) {\textbullet};
+\end{tikzpicture}
+\caption{The domain \( [0, 1] \times [0, 1] \), with boundary and initial conditions
+given by functions \( f, g_1 \) and \( g_2 \).}
+\end{figure}
+
+A scheme based on forward and backward Euler,
+together with a central difference in space, could be:
+$$
+  \frac{1}{k}\nabla_tU_{m}^{n+1}=\frac{\mu}{h^2}\delta_x^2U_{m}^{n+1}+f(U_{m}^{n} )
+$$
 which can be rewritten to 
-$$U_{m}^{n+1} = U_{m}^{n} + r (U_{m+1}^{n+1}-2U_{m}^{n+1}+U_{m-1}^{n+1}) + kf(U_{m}^{n}), \quad r = \mu\frac{k}{h^2}$$
-Time dependent PDEs should be solved using implicit methods. This requires solving a linear system for each step. We wish to avoid this, by using an implicit method for the diffusion term and an explicit method for the reaction term.
-This could be solved be using the scheme
+$$
+  U_{m}^{n+1} = U_{m}^{n} + r (U_{m+1}^{n+1}-2U_{m}^{n+1}+U_{m-1}^{n+1}) + kf(U_{m}^{n}), \quad r = \mu\frac{k}{h^2}
+$$
+Time dependent PDEs with diffusion terms should be solved using implicit methods.
+This requires solving a nonlinear system for each step.
+The following scheme is based on an implicit method
+for the diffusion term and an explicit method for the reaction term.
 \begin{align}
   \label{eq:scheme_implicit_eq}
     U_{m}^{*} =& U_{m}^{n} +\frac{r}{2}(\delta_x^2 U_{m}^{*} + \delta_x^2 U_{m}^{n} ) + kf(U_{m}^{n}) \\
