@@ -94,7 +94,7 @@ Define the matrix \( S \) as
 \end{equation}
 
 and define the vector \( U^n = [U_1^n, U_2^n, \dots, U_M^n]^T \)
-by combining the function value at the \( M \) inner points into a vector.
+by combining the function values at the \( M \) inner points into a vector.
 To make the matrix-vector product well defined, let \( S \) be of dimensions
 \( M \times M \).
 
@@ -115,24 +115,26 @@ and collecting the \( U^* \)-s on the left hand side yields:
 
 Now since the inverse of \( I - \frac{r}{2}S \) exists,
 we substitute for \( U^* \)
-in equation \ref{eq:scheme_explicit_eq}:
-\begin{align}
+in equation \ref{eq:scheme_explicit_eq}
+and arrive at an expression for the matrix \( C \)
+satisfying \( U^{n+1} = C U^n \).
+\begin{align*}
   U^{n+1} &= U^n + \frac{ka}{2}\left(U^*  - U^n\right) \\
           &= \left(1 + \frac{ka}{2}\right) U^* - \frac{ka}{2}U^n \\
           &= \left(1 + \frac{ka}{2}\right) {\left[I - \frac{r}{2}S\right]}^{-1} \left(I + kaI + \frac{r}{2}S\right) U^n - \frac{ka}{2}U^n \\
           &= {\left[I - \frac{r}{2}S\right]}^{-1} \left(\left(1 + \frac{ka}{2}\right)\left(I + kaI + \frac{r}{2}S\right) - \frac{ka}{2}\left(I-\frac{r}{2}S\right)\right) U^n \\
-          &= {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right) U^n \\
-          &= C U^n
-\end{align}
-where we let 
+          &= {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right) U^n
+\end{align*}
+
+So
 \begin{equation}
-    C = {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)
+    C = {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right).
   \end{equation}
 
 \begin{lemma}
   \label{lemma:S_diagonalizable}
   The matrix \( S = \text{tridiag}(1, -2, 1) \in \text{Mat}_{M, M}(\mathbb{R}) \)
-  is diagonalizable by orthogonal matrices \( P \): \( S = P \Lambda P^T \).
+  is diagonalizable by a orthogonal matrix \( P \): \( S = P \Lambda P^T \).
   The eigenvalues of \( S \) are
   \( \lambda_m = - \sin^2 \phi_m, \phi_m = \frac{m \pi}{2(M+1)}, m = 1, \dots, M\).
 \end{lemma}
@@ -141,16 +143,24 @@ where we let
 \end{proof}
 
 By using lemma \ref{lemma:S_diagonalizable} we arrive at a diagonalization for \( C \):
-\begin{align}
+\begin{align*}
   C &= {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right) \\
     &= {\left[PP^T - \frac{r}{2}P\Lambda P^T\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)PP^T + \frac{1}{2}\left(1+ka\right)r P\Lambda P^T\right) \\
     &= P{\left[I - \frac{r}{2}\Lambda \right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)r \Lambda \right) P^T \\
     &= P \Delta P^T
-\end{align}
+\end{align*}
 where
 \begin{equation}
     \Delta = {\left[I - \frac{r}{2}\Lambda \right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)r \Lambda \right)
 \end{equation}
+
+We observe that \( C \) is symmetric
+since \( C = P \Delta P^T = P \Delta^T P^T = \left(P \Delta P^T\right)^T = C^T \).
+This is nice since now the condition \( \rho(C) \le 1 + \nu k \) is
+both \textit{necessary} and sufficient for stability
+when we use \( ||\cdot||_{2,h} \).
+In particular, for a symmetric matrix \( C \) we have that \( ||C||_{2,h} = \rho(C) \).
+
 The eigenvalues for \( C \) are found on the diagonal of \( \Delta \):
 \begin{equation}
   \Delta_m =
@@ -158,39 +168,33 @@ The eigenvalues for \( C \) are found on the diagonal of \( \Delta \):
       {1 - \frac{r}{2} \lambda_m}
 \end{equation}
 
-The condition \( \rho(C) \le 1 + \nu k \) is
-both necessary and sufficient for stability if \( C \) is symmetric.
-
-\begin{lemma}
-    \( C \) is symmetric.
-\end{lemma}
-\begin{proof}
-   \( C = AB \), where \( A \) and \( B \) are symmetric.
-   We need to show that \( AB = BA \).
-   TODO: proper proof.
-\end{proof}
-
 A bound on \( \rho(C) = \max_{m} \lvert \Delta_m \rvert \) is found:
-\begin{align}
+\begin{align*}
   \left\lvert \Delta_m \right\rvert &= 
 \left\lvert \frac{\left(1+ka+\frac{1}{2}(ka)^2\right) + \frac{1}{2}\left(1+ka\right)r \lambda_m}
 {1 - \frac{r}{2} \lambda_m} \right\rvert \\
  &= 
  \left\lvert \left(1+ka\right)\frac{1+\frac{1}{2}r \lambda_m}{1 - \frac{1}{2}r \lambda_m} + \frac{1}{2}(ka)^2 \frac{1}{1 - \frac{1}{2}r \lambda_m} \right\rvert \\
- &\le \left\lvert \left(1+ka\right)\frac{1+\frac{1}{2}r \lambda_m}{1 - \frac{1}{2}r \lambda_m} \right\rvert + \left\lvert\frac{1}{2}(ka)^2 \frac{1}{1 - \frac{1}{2}r \lambda_m} \right\rvert \\
- &= 
- \left\lvert \left(1+ka\right)\frac{1+\frac{1}{2}r \lambda_m}{1 - \frac{1}{2}r \lambda_m} + \frac{1}{2}(ka)^2 \frac{1}{1 - \frac{1}{2}r \lambda_m} \right\rvert \\
  &\le \left\lvert \left(1+ka\right) \right\rvert \left\lvert \frac{1+\frac{1}{2}r \lambda_m}{1 - \frac{1}{2}r \lambda_m} \right\rvert + \frac{1}{2}(ka)^2 \left\lvert\frac{1}{1 - \frac{1}{2}r \lambda_m} \right\rvert \\
- \intertext{Note that \( -1 < \lambda_m < 0  \) for all \( m = 1, \dots, M \), so we can simplify further:}
+ \intertext{
+   Note that \( -1 < \lambda_m < 0  \) for all \( m = 1, \dots, M \).
+   In addition, the step size \( k \) is bounded by some constant
+   \( T \) (having a step size larger than the length of the time domain
+   does not make sence).
+  We can simplify further:
+}
+ \left\lvert \Delta_m \right\rvert
  &\le 1 + (\lvert a \rvert + \frac{1}{2}k a^2 )k \\
  &\le 1 + (\lvert a \rvert + \frac{1}{2}T a^2)k \\
  &= 1 + \nu k
-\end{align}
+\end{align*}
 
+And now we have arrived at the expression needed for stability
+without imposing any conditions on the scheme.
 We summarize our discussion in a theorem.
 
 \begin{theorem}
-    The scheme is unconditionally stable.
+  The scheme given in equations \ref{eq:scheme_implicit_eq} and \ref{eq:scheme_explicit_eq} is unconditionally stable.
 \end{theorem}
 
 \subsection{Consistency}
