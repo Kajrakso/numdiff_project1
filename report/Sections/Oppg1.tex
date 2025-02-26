@@ -159,7 +159,17 @@ The eigenvalues for \( C \) are found on the diagonal of \( \Delta \):
 \end{equation}
 
 The condition \( \rho(C) \le 1 + \nu k \) is
-both necessary and sufficient for stability since \( C \) is symmetric.
+both necessary and sufficient for stability if \( C \) is symmetric.
+
+\begin{lemma}
+    \( C \) is symmetric.
+\end{lemma}
+\begin{proof}
+   \( C = AB \), where \( A \) and \( B \) are symmetric.
+   We need to show that \( AB = BA \).
+   TODO: proper proof.
+\end{proof}
+
 A bound on \( \rho(C) = \max_{m} \lvert \Delta_m \rvert \) is found:
 \begin{align}
   \left\lvert \Delta_m \right\rvert &= 
