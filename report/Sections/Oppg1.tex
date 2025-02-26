@@ -11,7 +11,7 @@ where $\mu$ is a positive constant.
 We also assume that the reaction term,
 $f(u)$, is a linear function in \( u \).
 That is, it can be written as \( f(u) = au \),
-for some constant \( 0 \neq a \in \mathbb{R} \).
+for some constant \( a \in \mathbb{R}, a \neq 0 \).
 Explicit methods can be used to solve $u_t = f(u)$.
 
 We solve the equation on
@@ -37,8 +37,8 @@ for some positive constants \( M, N \).
 \begin{tikzpicture}
   \draw[help lines] (0,0) grid (4, 4);
 
-  \draw[thick,->] (0,0) -- (4.5,0) node[anchor=north west] {x};
-  \draw[thick,->] (0,0) -- (0,4.5) node[anchor=south east] {t};
+  \draw[thick,->] (0,0) -- (4.5,0) node[anchor=north west] {\( x \)};
+  \draw[thick,->] (0,0) -- (0,4.5) node[anchor=south east] {\( t \)};
 
   \draw[very thin] (0,4) node[anchor=east] {\( 1 \)} -- (4,4) ; 
   \draw[very thin] (4,0) node[anchor=north] {\( 1 \)} -- (4,4) ; 
@@ -81,16 +81,18 @@ for the diffusion term and an explicit method for the reaction term.
 \subsection{Stability analysis}
 
 Define the matrix \( S \) as
-\[
+\begin{equation}
+  \label{eq:Smatrix}
   S = 
   \begin{bmatrix}
-  -2 & 1 &  &  & \\
-   1& -2 & 1 &  & \\
-   & \ddots & \ddots & \ddots & \\
-   &  & 1 & -2 & 1\\
-   &  &  & 1 & -2\\
+    -2 & 1 &  &  & \\
+    1& -2 & 1 &  & \\
+     & \ddots & \ddots & \ddots & \\
+     &  & 1 & -2 & 1\\
+     &  &  & 1 & -2\\
   \end{bmatrix}
-\]
+\end{equation}
+
 and define the vector \( U^n = [U_1^n, U_2^n, \dots, U_M^n]^T \)
 by combining the function value at the \( M \) inner points into a vector.
 To make the matrix-vector product well defined, let \( S \) be of dimensions
@@ -98,12 +100,21 @@ To make the matrix-vector product well defined, let \( S \) be of dimensions
 
 Rewriting equation \ref{eq:scheme_implicit_eq} as a matrix-vector equation
 and collecting the \( U^* \)-s on the left hand side yields:
-yields
 \begin{equation}
   (I - \frac{r}{2}S)U^* = (I + kaI + \frac{r}{2}S) U^n
 \end{equation}
 
-Since the inverse of \( I - \frac{r}{2}S \) exists, we substitute for \( U^* \)
+\begin{lemma}
+  \label{lemma:existance_of_inverse}
+  Let \( S \in \text{Mat}_M(\mathbb{R}) \) be defined as in \eqref{eq:Smatrix}.
+  Then \( \left(I - \frac{r}{2}S\right)^{-1}\) exists. TODO: for which M, r?
+\end{lemma}
+\begin{proof}
+    jajajjaja
+\end{proof}
+
+Now since the inverse of \( I - \frac{r}{2}S \) exists,
+we substitute for \( U^* \)
 in equation \ref{eq:scheme_explicit_eq}:
 \begin{align}
   U^{n+1} &= U^n + \frac{ka}{2}\left(U^*  - U^n\right) \\
@@ -172,17 +183,20 @@ We summarize our discussion in a theorem.
     The scheme is unconditionally stable.
 \end{theorem}
 
+\subsection{Consistency}
+
 \begin{lemma}
     \label{central_difference}
     $$\delta_x^2u_{m}^{n} = h^2\partial_x^2 u_{m}^{n} + \mathcal{O}(h^4)$$
 \end{lemma}
-
+\begin{proof}
+    left as en exercise to the reader.
+\end{proof}
 
 \begin{theorem}
     \label{consistent}
     Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the local truncation error of the method is $\mathcal{O}(k^2 + h^2).$
 \end{theorem}
-
 
 \begin{proof}
     We rewrite (\ref{eq:scheme_explicit_eq}) to be an explicit equation for $U_m^*$
@@ -208,3 +222,26 @@ We summarize our discussion in a theorem.
         \tau_m^n =& \mathcal{O}(h^2 + k^2) \\
     \end{align*}
 \end{proof}
+
+\subsection{Numerical experiments}
+
+We use the following test equation:
+\begin{align}
+  u_t &= \frac{1}{5}u_xx + 5 u \\
+  u(0, x) &= \sin (2\pi x) \\
+  u(t, 0) &= 0 \\
+  u(t, 1) &= 0
+\end{align}
+
+The solution is
+\begin{equation}
+  \label{eq:anal_sol}
+  u(t, x) = \text{e}^{-(4\pi^2 \mu - a)t}\sin(2\pi x)
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Images/plots/temp_task1.pdf}
+    \caption{TEMP: convergence plot}
+    \label{fig:mesh1}
+\end{figure}
