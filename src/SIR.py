@@ -20,7 +20,7 @@ def solve(
     gamma: float,
     mu_I: float,
     mu_S: float,
-) -> np.ndarray:
+) -> tuple[np.ndarray, np.ndarray]:
     """Solve the differential eq. given by:\n
     St = −βIS + µ_S*∆S,
     It = βIS − γI + µ_I*∆I,
@@ -73,7 +73,7 @@ def solve(
         U[i + 1, :, :, 0] = U[i + 1, :, :, 2]
         U[i + 1, :, :, -1] = U[i + 1, :, :, -3]
 
-    return U
+    return U, np.linspace(0, t_end, M)
 
 
 def laplacian(A: np.ndarray) -> np.ndarray:
