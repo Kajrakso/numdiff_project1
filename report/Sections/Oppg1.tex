@@ -228,6 +228,7 @@ without imposing any conditions on the scheme.
 We summarize our discussion in a theorem.
 
 \begin{theorem}
+    \label{stability}
   The scheme given in equations \eqref{eq:scheme_implicit_eq}
   and \eqref{eq:scheme_explicit_eq} is unconditionally stable.
 \end{theorem}
@@ -252,11 +253,12 @@ We summarize our discussion in a theorem.
 
 \begin{theorem}
     \label{consistent}
-    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the local truncation error of the method is of order $\mathcal{O}(k^2 + h^2).$
+    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the local truncation error of the method is of order $k^2 + h^2.$
 \end{theorem}
 
 \begin{proof}
-    We rewrite (\ref{eq:scheme_explicit_eq}) to be an explicit equation for $U_m^*$
+    For the boundaries, $\tau_0=\tau_{M+1}= 0$, since we have Dirichlet boundary conditions and the approximation is exact.
+    For the inner points we rewrite (\ref{eq:scheme_explicit_eq}) to be an explicit equation for $U_m^*$
     $$ U_{m}^{*}= \frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}}.$$
     This is then substituted into \ref{eq:scheme_implicit_eq} to remove $U_{m}^{*}$ from the equation
     $$\frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}} = (1+ka)U_{m}^{n}+\frac{r}{2}\left( \frac{\delta_x^2(U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n})}{1+\frac{ka}{2}}  + \delta_x^2 U_{m}^{n}\right).$$
@@ -280,15 +282,55 @@ We summarize our discussion in a theorem.
     \end{align*}
 \end{proof}
 
+\begin{corollary}
+    \label{corollary:norm_tau}
+    $\lVert\tau^s \lVert_{2, h} =\mathcal{O}(h^2+k^2)$
+\end{corollary}
+
+\begin{proof}
+We use the definition of $\lVert\cdot\lVert_{2,h}$ and (\ref{consistent}) for an upper bound of $\lvert \tau_m^n\lvert$
+    $$\lVert\tau^s \lVert_{2, h} = \sqrt{h}\left( \sum_{i=0}^{M+1} \lvert\tau^s_i \lvert^2 \right)^\frac{1}{2} \leq \sqrt{h}\left( \sum_{i=0}^{M+1} A(k^2+h^2) \right)^\frac{1}{2} = \sqrt{h}\left[ (M+1) A^2(k^2+k^2)^2 \right]^\frac{1}{2}$$
+    and using that $h = \frac{1}{M+1}$
+    $$\lVert\tau^s \lVert_{2, h} = \frac{\sqrt{h}}{\sqrt{h}}A(k^2+h^2) = A(k^2+h^2).$$
+\end{proof}
 \begin{theorem}
+    \label{convergence_lax}
     Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the method is convergent.
 \end{theorem}
 
 \begin{proof}
     The method is stable, (\ref{stability}), and consistent, (\ref{consistent}), and therefore convergent by Lax' equivalence theorem.
 \end{proof}
-\subsection{Numerical experiments}
 
+
+\begin{theorem}
+    The method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
+\end{theorem}
+
+\begin{proof}
+    The scheme can be written of the form
+    $$\left(I - \frac{r}{2}S \right)U_{m}^{n+1} = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)U_{m}^n$$
+    or using $A = \left(I - \frac{r}{2}S \right)$ and $B = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)$ as
+    $$AU_{m}^{n+1} = BU_{m}^{n+1}.$$
+    If we place $U_m^n - u_m^n$ into the equation instead, we get
+    $$AE^{n+1} = BE^n - k\tau^n$$
+    exchanging $n+1$ with $n$, multiplying by $A^{-1}$, which exists given (\ref{lemma:existance_of_inverse})
+    $$E^n = A^{-1}BE^{n-1} -kA^{-1}\tau^n$$
+    we set $q^{n-1}= -kA^{-1}\tau^n$ and $C=A^{-1}B$
+    $$E^n = CE^{n-1}+q^{n-1}$$
+    and by using the term recursively, we get
+    $$E^n = C^nE^{0}+C^{n-1}q^0 + C^{n-2}q^1 + \dots + C q^{n-2} +  q^{n-1}.$$
+    Taking the norm on both sides and using stability from (\ref{stability}) to give a bound $L$ for $\lVert C^n \lVert$
+    $$\lVert E^n\lVert  \leq L\sum_{s=0}^{n-1}\lVert q^s \lVert$$
+    we the use that 
+    $$\lVert q^s \lVert \leq k \lVert A^{-1} \lVert \lVert\tau^s \lVert \leq k \tilde{K} \lVert\tau^s \lVert$$
+    and, using $nk\leq Nk=T$, obtain
+    $$\lVert E^n \lVert \leq L \tilde{K}nk \max_{0\leq s \leq n-1} \lVert \tau^s\lVert \leq L \tilde{K}T\max_{0\leq s \leq n-1} \lVert \tau^s\lVert.$$
+    Using $\lVert \cdot \lVert_{2, h}$ as the norm we get by (\ref{corollary:norm_tau})
+    $$\lVert E^n \lVert_{2, h} \leq L \tilde{K}TA(k^2+h^2)$$
+\end{proof}
+
+\subsection{Numerical experiments}
 We use the following test equation:
 \begin{align}
   u_t &= \frac{1}{5}u_xx + 5 u \\
