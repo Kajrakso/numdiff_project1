@@ -239,12 +239,20 @@ We summarize our discussion in a theorem.
     $$\delta_x^2u_{m}^{n} = h^2\partial_x^2 u_{m}^{n} + \mathcal{O}(h^4)$$
 \end{lemma}
 \begin{proof}
-    left as an exercise to the reader.
+    $$\delta_x^2u_{m}^{n} = u_{m+1}^{n} - 2 u_{m}^{n} + u_{m-1}^{n}$$
+    Then Taylor expand around $u_{m}^{n}$.
+    \begin{align*}
+        \delta_x^2u_{m}^{n} =& u_{m}^{n}  + h\partial_xu_{m}^{n} + \frac{h^2}{2}\partial_x^2 + \frac{h^3}{3!}\partial_x^3 u_{m}^{n} + \frac{h^4}{4!}\partial_x^4 u_{m}^{n} + \mathcal{O}(h^5) \\
+        -&2u_{m}^{n} \\
+        +& u_{m}^{n} - h\partial_xu_{m}^{n} + \frac{h^2}{2}\partial_x^2 u_{m}^{n} - \frac{h^3}{3!}\partial_x^3u_{m}^{n} + \frac{h^4}{4!}\partial_x^4 u_{m}^{n} + \mathcal{O}(h^5) \\
+        =& h^2\partial_x^2 u_{m}^{n} + \frac{h^4}{12}\partial_x^4 u_{m}^{n} + \mathcal{O}(h^5) \\
+        =&  h^2\partial_x^2 u_{m}^{n} + \mathcal{O}(h^4)
+    \end{align*}
 \end{proof}
 
 \begin{theorem}
     \label{consistent}
-    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the local truncation error of the method is $\mathcal{O}(k^2 + h^2).$
+    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the local truncation error of the method is of order $\mathcal{O}(k^2 + h^2).$
 \end{theorem}
 
 \begin{proof}
