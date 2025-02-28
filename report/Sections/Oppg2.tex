@@ -56,10 +56,10 @@ the area, we set the boundary conditions to be
         \nabla R(\Omega) &= \Vec{0}, \\
     \end{split}
 \end{equation}
-where $\Omega$ is the edge of the domain. In discretized form, this reads
+where $\Omega$ is the edge of the domain. In discretized form this reads
 \begin{equation}
     \begin{split}
-        \frac{\Delta X_{n,m}^l - \nabla X_{n,m}^l}{2h} = 0
+        \frac{\Delta_h X_{n,m}^l - \nabla_h X_{n,m}^l}{2h} = 0,
     \end{split}
 \end{equation}
 or equivalently
@@ -69,10 +69,12 @@ or equivalently
         X_{n,N+2}^l &= X_{n, N}^l \\
         X_{-1,m}^l &= X_{1, m}^l \\
         X_{N+2,m}^l &= X_{N, m}^l \\
-        & n,m \in [1, N].
+        & n,m \in [1, N]
     \end{split}
 \end{equation}
 
+
+\subsection{Results}
 Although the conditions are set to enforce constant population size, we will still observe errors in the numerical scheme. A possible solution of this problem is to not 
 solve for $R(t)$ explicitly, but rather to let $R(t)$ be the remains
 \begin{itemize}
@@ -82,7 +84,6 @@ solve for $R(t)$ explicitly, but rather to let $R(t)$ be the remains
 Ideally both solutions would give the same answer.
 In our solution we have done the latter.
 
-\subsection{Results}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{report/Images/plots/plot-i_t=5000-0.pdf}
