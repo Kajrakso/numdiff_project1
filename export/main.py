@@ -228,18 +228,12 @@ def SIR_solve(
     mu_I: float,
     mu_S: float,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Solve the differential eq. given by:\n
+    """Solve the differential eq. given by:
     St = -βIS + µ_S*∆S,
     It = βIS - γI + µ_I*∆I,
     Rt = γI
 
     (Uses forward Euler for the time step)
-    ---
-    Args:
-        beta (Union[np.ndarray, float]): If array its size needs to be (N+2, N+2)
-
-    Returns:
-
     """
     assert S_0.shape == (N, N), f"S_0 shape: {S_0.shape}. Expected: {(N, N)}"
     assert I_0.shape == (N, N), f"I_0 shape: {I_0.shape}. Expected: {(N, N)}"
