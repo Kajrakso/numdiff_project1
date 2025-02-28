@@ -305,12 +305,12 @@ We summarize our discussion in a theorem.
 \begin{proof}
 We use theorem \ref{consistent} for an upper bound of $\lvert \tau_m^n\lvert$.
     $$
-    \lVert\tau^s \lVert_{2, h} = \sqrt{h}\left( \sum_{i=0}^{M+1} \lvert\tau^s_i \lvert^2 \right)^\frac{1}{2} \leq \sqrt{h}\left( \sum_{i=0}^{M+1} A(k^2 + h^2) \right)^\frac{1}{2} = \sqrt{h}\left[ (M+2) A^2(k^2+h^2)^2 \right]^\frac{1}{2}.
+    \lVert\tau^s \lVert_{2, h} = \sqrt{h}\left( \sum_{i=0}^{M+1} \lvert\tau^s_i \lvert^2 \right)^\frac{1}{2} \leq \sqrt{h}\left( \sum_{i=0}^{M+1} R(k^2 + h^2) \right)^\frac{1}{2} = \sqrt{h}\left[ (M+2) R^2(k^2+h^2)^2 \right]^\frac{1}{2}.
     $$
     Furthermore, $h = \frac{1}{M+1}$, so
     $$\lVert\tau^s \lVert_{2, h}
-      \le \frac{\sqrt{M+2}}{\sqrt{M+1}}A(k^2+h^2)
-      \le \sqrt{ \frac{3}{2}} A(k^2+h^2) 
+      \le \frac{\sqrt{M+2}}{\sqrt{M+1}}R(k^2+h^2)
+      \le \sqrt{ \frac{3}{2}} R(k^2+h^2) 
     $$
 \end{proof}
 
@@ -350,7 +350,7 @@ We use theorem \ref{consistent} for an upper bound of $\lvert \tau_m^n\lvert$.
     $$
     By corollary \ref{corollary:norm_tau}
     $$
-    \lVert E^{n+1} \rVert_{2, h} \leq L \tilde{K}\tilde{T}\tilde{A}(k^2+h^2).
+    \lVert E^{n+1} \rVert_{2, h} \leq L \tilde{K}\tilde{T}\tilde{R}(k^2+h^2).
     $$
   Hence, \( \lVert E^{n+1} \rVert_{2, h} = \mathcal{O}(k^2 + h^2)\).
 \end{proof}
