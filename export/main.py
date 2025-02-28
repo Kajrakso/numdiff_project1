@@ -307,7 +307,7 @@ def population_deviation(u, t) -> None:
     ax.set(
         xlabel="Time",
         ylabel="Population deviation (%)",
-        title="Total population deviation"
+        title="Total population deviation",
     )
     ax.grid(True)
     plt.savefig(PLOTS_PATH / "pop_deviation.pdf")
@@ -339,7 +339,21 @@ def task2():
     u, t = SIR_solve(1, 1, N, M, S_0, I_0, R_0, beta, gamma, mu_I, mu_S)
 
     x_grid, y_grid = np.meshgrid(np.linspace(0, 1, N + 4), np.linspace(0, 1, N + 4))
-    for _i_t in (0, 100, 500, 1000, 2000, 3000, 4000, 5000, 10_000):
+    for _i_t in (
+        0,
+        100,
+        500,
+        1000,
+        2000,
+        3000,
+        4000,
+        5000,
+        6000,
+        7000,
+        8000,
+        9000,
+        10_000,
+    ):
         plot_state(x_grid, y_grid, u, t, _i_t, save=True)
 
     population_deviation(u, t)
