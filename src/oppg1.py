@@ -31,7 +31,7 @@ class ReacDiffSolver:
         self.alpha = alpha
 
     def solve(
-        self, M: int, N: int, T: int = 1
+        self, M: int, N: int, T: int
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """M: number of inner grid points in space.
         N: number of steps in time.
@@ -42,13 +42,13 @@ class ReacDiffSolver:
             array with points in space (M+2)
             array with points in time (N+1)
         """
-        k = 1 / N  # step size in time
+        k = T / N  # step size in time
         h = 1 / (M + 1)  # step size in space
         r = self.mu * k / h**2
 
         sol = np.zeros((N + 1, M + 2))
         x = np.linspace(0, 1, M + 2)
-        t = np.linspace(0, 1, N + 1)
+        t = np.linspace(0, T, N + 1)
 
         # set boundaries
         sol[0, :] = self.f(x)
@@ -82,11 +82,12 @@ class ReacDiffTester:
     N_const = M_const = 10_000
     NUM_POINTS = 5
 
-    def __init__(self, mu, a, b, phi):
+    def __init__(self, mu: float, a: float, b: float, phi: float, T: float = 1):
         self.mu = mu
         self.a = a
         self.b = b
         self.phi = phi
+        self.T = T
 
         self.solver = ReacDiffSolver(
             mu=self.mu,
@@ -101,7 +102,7 @@ class ReacDiffTester:
             (-self.mu * self.b**2 + self.a) * t
         ) * np.sin(self.b * x + self.phi)
 
-    def generate_convergence_plots(self, filename):
+    def generate_convergence_plots(self, filename: str):
         """Generates three convergence plots, where
         the global error is plotted against
         h (whilst keeping k constant),
@@ -123,7 +124,7 @@ class ReacDiffTester:
                 ("k", self.M_const, Ns[i]),
                 ("hk", Ms[i], Ns[i]),
             ):
-                sol, x, t = self.solver.solve(M=_M, N=_N)
+                sol, x, t = self.solver.solve(M=_M, N=_N, T=self.T)
                 anal = self.analytic(*np.meshgrid(t, x)).T
                 errs[c][i] = np.max(
                     1 / np.sqrt(x.size) * np.linalg.norm(sol - anal, ord=2, axis=1)
@@ -134,26 +135,26 @@ class ReacDiffTester:
         fig.suptitle("Convergence plots")
 
         axs[0].loglog(1 / Ms, (1 / Ms) ** 2, "--", label="$h^2$")
-        axs[0].loglog(1 / Ms, errs["h"], ".-b", label=f"k = {1/self.N_const}")
+        axs[0].loglog(1 / Ms, errs["h"], ".-b", label=f"k = {self.T/self.N_const}")
         axs[0].set(
             xlabel=r"$h$",
             ylabel=r"$||E^n||_{2,h}$",
             title=r"Constant $k$",
         )
 
-        axs[1].loglog(1 / Ns, (1 / Ns) ** 2, "--", label=r"$\mathcal{O}(k^2)$")
-        axs[1].loglog(1 / Ns, errs["k"], ".-b", label=f"h = {1/self.M_const}")
+        axs[1].loglog(self.T / Ns, (self.T / Ns) ** 2, "--", label=r"$\mathcal{O}(k^2)$")
+        axs[1].loglog(self.T / Ns, errs["k"], ".-b", label=f"h = {1/self.M_const}")
         axs[1].set(
             xlabel=r"$k$",
             ylabel=r"$||E^n||_{2,h}$",
             title=r"Constant $h$",
         )
 
-        axs[2].loglog(1 / Ns, (1 / Ns) ** 2, "--", label=r"$\mathcal{O}{(h^2)}$")
-        axs[2].loglog(1 / Ns, 0.005 * 1 / Ns, "--", label=r"$\mathcal{O}{(h)}$")
-        axs[2].loglog(1 / Ns, errs["hk"], ".-b", label="h=k")
+        axs[2].loglog(self.T / Ns, (self.T / Ns) ** 2, "--", label=r"$\mathcal{O}{(h^2)}$")
+        axs[2].loglog(self.T / Ns, 0.005 * self.T / Ns, "--", label=r"$\mathcal{O}{(h)}$")
+        axs[2].loglog(self.T / Ns, errs["hk"], ".-b", label="h=k")
         axs[2].set(
-            xlabel=r"$h$",
+            xlabel=r"$h,k$",
             ylabel=r"$||E^n||_{2,h}$",
             title=r"$(h,k) \to (0,0)$ along $h=k$",
         )
@@ -179,8 +180,9 @@ def task1():
     a = 1
     b = 3 / 2 * np.pi
     phi = 1 / 4 * np.pi
+    T = 1
 
-    tester = ReacDiffTester(mu=mu, a=a, b=b, phi=phi)
+    tester = ReacDiffTester(mu=mu, a=a, b=b, phi=phi, T=T)
     tester.generate_convergence_plots("task1_error.pdf")
 
 

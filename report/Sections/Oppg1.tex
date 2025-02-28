@@ -2,7 +2,7 @@
 
 \subsection{Some equation lol}
 
-We wish to look at reaction-diffusion equations, which have the form
+We consider reaction-diffusion equations, which have the form
 \begin{equation}
     \label{eq:original_eq}
      u_t = \mu u_{xx} + f(u)
@@ -12,12 +12,10 @@ We also assume that the reaction term,
 $f(u)$, is a linear function in \( u \).
 That is, it can be written as \( f(u) = au \),
 for some constant \( a \in \mathbb{R}, a \neq 0 \).
-Explicit methods can be used to solve $u_t = f(u)$.
-
-We solve the equation on
-the grid \( (x, t) \in [0, 1] \times [0, 1] \)
+Furthermore, we solve the equation on
+the grid \( (x, t) \in [0, 1] \times [0, T] \)
 with boundary conditions given by functions
-\( f, g_1 \) and \( g_2 \).
+\( f, g_1 \) and \( g_2 \):
 \begin{align*}
   u(0, x) &= f(x) \\
   u(t, 0) &= g_1(t) \\
@@ -37,14 +35,14 @@ for some positive constants \( M, N \).
   \resizebox{0.45\columnwidth}{!}{%
   \begin{tikzpicture}
     %grid
-    \draw[step=0.5,gray,thin] (0,0) grid (4, 4);
+    \draw[help lines, step=0.5] (0,0) grid (4, 4);
 
     % axes
     \draw[thick,->] (0,0) -- (4.5,0) node[anchor=north west] {\( x \)};
     \draw[thick,->] (0,0) -- (0,4.5) node[anchor=south east] {\( t \)};
 
     % lines at y=1 and x=1
-    \draw[thick] (-2pt,4) node[anchor=east] {\( 1 \)} -- (4,4) ; 
+    \draw[thick] (-2pt,4) node[anchor=east] {\( T \)} -- (4,4) ; 
     \draw[thick] (4,-2pt) node[anchor=north] {\( 1 \)} -- (4,4) ; 
     \draw[thick] (-2pt,0) node[anchor=east] {\( 0 \)} -- (4,0) ; 
     \draw[thick] (0,-2pt) node[anchor=north] {\( 0 \)} -- (0,4) ; 
@@ -60,7 +58,7 @@ for some positive constants \( M, N \).
     \fill (1.5, 1) circle (2pt) node[above right] {\( (x_m, t_n) \)};
   \end{tikzpicture}
 }
-  \caption{The domain \( [0, 1] \times [0, 1] \),
+  \caption{The domain \( [0, 1] \times [0, T] \),
     with boundary and initial conditions
     given by functions \( f, g_1 \) and \( g_2 \).
   }
@@ -105,6 +103,7 @@ That is,
 and define the vector \( U^n = [U_1^n, U_2^n, \dots, U_M^n]^T \)
 by combining the function values at the \( M \) inner points
 at a time point \( t_n \) into a vector.
+Let \( I \) be the \( M \times M \) be the identity matrix.
 
 Before we go on with the stability analysis we need some results
 concerning the matrix \( S \).
@@ -128,7 +127,7 @@ concerning the matrix \( S \).
   \label{lemma:existance_of_inverse}
 Let \( S \in \text{Mat}_{M,M}(\mathbb{R}) \) be defined as in \eqref{eq:Smatrix},
 and let \( r \) be defined as in \eqref{eq:scheme}.
-  Then \( \left(I - \frac{r}{2} S\right)\) is invertible.
+  Then \( I - \frac{r}{2} S\) is invertible.
 \end{lemma}
 \begin{proof}
   \( I - \frac{r}{2} S \) is invertible iff. all the eigenvalues are nonzero.
@@ -144,9 +143,9 @@ and let \( r \) be defined as in \eqref{eq:scheme}.
   Observe that \( r > 0 \) and \( \lambda_m < 0 \) for all \( m = 1, \dots, M \).
   Hence
   \[
-    1 - \frac{r}{2} \lambda_m > 1 \neq 0,
+    1 - \frac{r}{2} \lambda_m > 1 \neq 0
   \]
-  so the matrix is invertible.
+  for all \( m = 1, \dots, M \), so the matrix is invertible.
 \end{proof}
 
 Rewriting \eqref{eq:scheme_implicit_eq} as a matrix-vector equation
@@ -174,7 +173,8 @@ So
     C = {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right).
   \end{equation}
 
-By exploiting lemma \ref{lemma:S_diagonalizable} we arrive at a diagonalization for \( C \):
+By exploiting lemma \ref{lemma:S_diagonalizable} once more
+we arrive at a diagonalization for \( C \):
 \begin{align*}
   C &= {\left[I - \frac{r}{2}S\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right) \\
     &= {\left[PP^T - \frac{r}{2}P\Lambda P^T\right]}^{-1} \left( \left(1+ka+\frac{1}{2}(ka)^2\right)PP^T + \frac{1}{2}\left(1+ka\right)r P\Lambda P^T\right) \\
@@ -188,8 +188,9 @@ where
 
 We observe that \( C \) is symmetric
 since \( C = P \Delta P^T = P \Delta^T P^T = \left(P \Delta P^T\right)^T = C^T \).
-This is nice since now the condition \( \rho(C) \le 1 + \nu k \) is
-both \textit{necessary} and sufficient for stability
+This is nice since now the condition
+\( \rho(C) = \le 1 + \nu k \) is
+both necessary \textit{and} \textit{sufficient} for stability
 when we use \( ||\cdot||_{2,h} \).
 In particular, for a symmetric matrix \( C \),
 we have that \( ||C||_{2,h} = \rho(C) \).
@@ -211,9 +212,8 @@ Bounding \( \rho(C) = \max_{m} \lvert \Delta_m \rvert \):
  &\le \left\lvert \left(1+ka\right) \right\rvert \left\lvert \frac{1+\frac{1}{2}r \lambda_m}{1 - \frac{1}{2}r \lambda_m} \right\rvert + \frac{1}{2}(ka)^2 \left\lvert\frac{1}{1 - \frac{1}{2}r \lambda_m} \right\rvert \\
  \intertext{
    Note that \( -1 < \lambda_m < 0  \) for all \( m = 1, \dots, M \).
-   In addition, the step size \( k \) is bounded by some constant
-   \( T \) (having a step size larger than the length of the time domain
-   do not make sence).
+   In addition, the step size \( k \) is bounded by the length of
+   the time domain, \( T \).
   We simplify further:
 }
  \left\lvert \Delta_m \right\rvert
@@ -295,6 +295,7 @@ We use the definition of $\lVert\cdot\lVert_{2,h}$ and theorem \ref{consistent} 
 \end{proof}
 
 \begin{theorem}
+  \label{thm:conv_order}
     Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
 \end{theorem}
 
@@ -327,11 +328,14 @@ We use the following solution to construct a test equation:
 \begin{equation}
   \tilde{u}(t, x) = \text{e}^{-(\mu b + a)t} \sin (bx + \varphi)
 \end{equation}
-where \( \mu  \) and \( a \) are the constants from the original problem
-(\eqref{eq:original_eq}).
+\( \mu  \) and \( a \) are the constants from the original problem
+(\eqref{eq:original_eq}) and we solve it on the domain \( [0,1] \times [0,1] \).
 Then we set \( \mu = 1/5, b = 3\pi/2, a = 1 \) and \( \varphi = \pi/4 \).
-The convergence plots (\ref{fig:conv_plot})
-align with the results from the theory section (\ref{thm:conv_order}).
+The convergence plots in figure \ref{fig:conv_plot}
+show that the order of convergence is quadratic both in
+time and space.
+This aligns with theorem \ref{thm:conv_order}
+from the theory section.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=\textwidth]{Images/plots/task1_error.pdf}
