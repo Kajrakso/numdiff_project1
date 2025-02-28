@@ -6,7 +6,7 @@
 % - Euler method
 % Explain different parts of results, impact of parameters
 
-A model for the modelling of sickness over time is the SIR-model. It is given by
+A well known model for the spread of infectious disease is the SIR-model. A simple version of SIR-model is
 \begin{equation}
     \begin{split}
         \frac{dS}{dt} &= -\beta I S \\
@@ -14,8 +14,8 @@ A model for the modelling of sickness over time is the SIR-model. It is given by
         \frac{dR}{dt} &= \gamma I. \\
     \end{split}
 \end{equation}
-However, it does not describe the spatial spread of an illness, which can be accommodated for by modifying the equations slightly. We introduce
-two dispersion terms to account for the spread in space and obtain the following modified equations
+However, this does not describe the spatial spread of an illness, which can be accommodated for by modifying the equations slightly. One proposed modification is given by \ref{bok}, which is adding
+two dispersion terms to account for the spread in space, which gives the following equations
 \begin{equation}
     \begin{split}
         \frac{dS}{dt} &= -\beta I S + \mu_S \Delta S \\
@@ -72,11 +72,21 @@ or equivalently
         & n,m \in [1, N]
     \end{split}
 \end{equation}
-
+on a square grid.
 
 \subsection{Results}
-Although the conditions are set to enforce constant population size, we will still observe errors in the numerical scheme. A possible solution of this problem is to not 
-solve for $R(t)$ explicitly, but rather to let $R(t)$ be the remains
+The first thing to note is that although the boundary conditions are set to enforce constant population size, we will still observe errors in the numerical scheme. As \ref{fig:non-constant-population-size}
+shows, the population increases slightly during the simulation. 
+A possible solution would be to not 
+solve for $R(t)$ explicitly, but rather to let $R(t)$ be the remainder of people so that the total sums to one. This would keep the total population constant, but also move the error to the
+$R(t)$ term, where no as good measure of the error is possible.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{report/Images/plots/pop_deviation.pdf}
+    \caption{Caption}
+    \label{fig:non-constant-population-size}
+\end{figure}
 \begin{itemize}
     \item Let $R$ be the "rest" of the population without solving the actual equation. $\implies$ The total number of people is stable at $1$, but the number of recovered people is not accurate.
     \item Solve the $R$ equation as stated, and accept that the population number is not fixed at 1, although it should not deviate far from 1.
