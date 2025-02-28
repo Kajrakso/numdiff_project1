@@ -130,29 +130,29 @@ class ReacDiffTester:
                     1 / np.sqrt(x.size) * np.linalg.norm(sol - anal, ord=2, axis=1)
                 )
 
-        fig, axs = plt.subplots(1, 3, figsize=(10, 6))
+        fig, axs = plt.subplots(1, 3, figsize=(10, 4))
 
         fig.suptitle("Convergence plots")
 
-        axs[0].loglog(1 / Ms, (1 / Ms) ** 2, "--", label="$h^2$")
-        axs[0].loglog(1 / Ms, errs["h"], ".-b", label=f"k = {self.T/self.N_const}")
+        axs[0].loglog(1 / Ms, errs["h"], ".-m", label=f"k = {self.T/self.N_const}")
+        axs[0].loglog(1 / Ms, (1 / Ms) ** 2, "--", label=r"$\mathcal{O}(h^2)$")
         axs[0].set(
             xlabel=r"$h$",
             ylabel=r"$||E^n||_{2,h}$",
             title=r"Constant $k$",
         )
 
+        axs[1].loglog(self.T / Ns, errs["k"], ".-r", label=f"h = {1/self.M_const}")
         axs[1].loglog(self.T / Ns, (self.T / Ns) ** 2, "--", label=r"$\mathcal{O}(k^2)$")
-        axs[1].loglog(self.T / Ns, errs["k"], ".-b", label=f"h = {1/self.M_const}")
         axs[1].set(
             xlabel=r"$k$",
             ylabel=r"$||E^n||_{2,h}$",
             title=r"Constant $h$",
         )
 
+        axs[2].loglog(self.T / Ns, errs["hk"], ".-g", label="h=k")
         axs[2].loglog(self.T / Ns, (self.T / Ns) ** 2, "--", label=r"$\mathcal{O}{(h^2)}$")
         axs[2].loglog(self.T / Ns, 0.005 * self.T / Ns, "--", label=r"$\mathcal{O}{(h)}$")
-        axs[2].loglog(self.T / Ns, errs["hk"], ".-b", label="h=k")
         axs[2].set(
             xlabel=r"$h,k$",
             ylabel=r"$||E^n||_{2,h}$",
