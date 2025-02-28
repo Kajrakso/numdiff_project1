@@ -293,22 +293,13 @@ We use the definition of $\lVert\cdot\lVert_{2,h}$ and theorem \ref{consistent} 
     and using that $h = \frac{1}{M+1}$
     $$\lVert\tau^s \lVert_{2, h} = \frac{\sqrt{h}}{\sqrt{h}}A(k^2+h^2) = A(k^2+h^2).$$
 \end{proof}
+
 \begin{theorem}
-    \label{convergence_lax}
-    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the method is convergent.
+    Given that $u$ is sufficiently smooth,  $f$ is of the form $f(u)=au, a\in \mathbb{R}$ and $k \neq \frac{-2}{a}$, the method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
 \end{theorem}
 
 \begin{proof}
-    The method is stable, (\ref{stability}), and consistent, (\ref{consistent}), and therefore convergent by Lax' equivalence theorem.
-\end{proof}
-
-
-\begin{theorem}
-  \label{thm:conv_order}
-    The method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
-\end{theorem}
-
-\begin{proof}
+    The method is stable, theorem \ref{stability}, and consistent, theorem \ref{consistent}, and therefore convergent by Lax' equivalence theorem. We also need to prove the order of convergence.
     The scheme can be written in the form
     $$\left(I - \frac{r}{2}S \right)U_{m}^{n+1} = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)U_{m}^n$$
     or using $A = \left(I - \frac{r}{2}S \right)$ and $B = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)$ as

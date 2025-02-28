@@ -3,9 +3,52 @@
 % - Introduce the problem
 % - Explain why total number is not constant, and choices
 % - Explain edge conditions
-A famous model for the modeling of sickness over time is the SIR-model. It is given by
+% - Euler method
+% In the following, we will assume a scaled model, so S, I and R are the fraction of the population that are suscpetible, infected and removed respectively. In this case, S(t) + I(t) + R(t) = 1.
+% Results
+
+A famous model for the modelling of sickness over time is the SIR-model. It is given by
 \begin{equation}
-    \frac{dS}{dt} = -\beta I S
-    \frac{dI}{dt} = \beta IS - \gamma I
-    \frac{dR}{dt} = \beta
+    \begin{array}{lcr}
+        \frac{dS}{dt} = -\beta I S \\
+        \frac{dI}{dt} = \beta IS - \gamma I \\
+        \frac{dR}{dt} = \gamma I. \\
+    \end{array}
 \end{equation}
+However, it does not describe the spatial spread of an illness, which can be accommodated for by modifying the equations slightly. We introduce
+two dispersion terms to account for the spread in space and obtain the following modified equations.
+\begin{equation}
+    \begin{array}{lcr}
+        \frac{dS}{dt} = -\beta I S + \mu_S \Delta S \\
+        \frac{dI}{dt} = \beta IS - \gamma I + \mu_I \Delta I\\
+        \frac{dR}{dt} = \gamma I. \\
+    \end{array}
+\end{equation}
+Additionally we further assume that $S(t) + I(t) + R(t) = 1$, so that we are always working with percentages of the total population instead of the actual population.
+
+To be able to solve the problem numerically, we need both initial values and boundary conditions. The initial values describes the initial distribution of people
+while the boundary conditions describe how people move over the problem border. As we want the area to be closed, we set the boundary conditions to be
+\begin{equation}
+    \nabla S(\Omega) = \Vec{0} \\
+    \nabla I(\Omega) = \Vec{0} \\
+    \nabla R(\Omega) = \Vec{0} \\
+\end{equation}
+which results in no crossing of people in or out of the area.
+
+\subsection{Implementation}
+To solve the equation we will use the Forward-Euler method, which is given by
+
+\begin{equation}
+    
+\end{equation}
+
+---
+To be able to solve the equations, we need initial conditions and boundary conditions. Since we want the total population to stay fixed, we introduce Neumann-conditions.
+-> extra equations to be solved
+
+\subsection{Results}
+Although we want the total number of people to be constant, this is not feasible when solving the equations numerically without some loss. Two options were considered
+- Let $R$ be the "rest" of the population without solving the actual equation. -> The total number of people is stable at $1$, but the number of recovered people is not accurate.
+- Solve the $R$ equation as stated, and accept that the population number is not fixed at 1.
+Ideally both solutions would give the same answer.
+In our solution we have done the latter. >
