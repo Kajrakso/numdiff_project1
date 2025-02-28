@@ -339,20 +339,16 @@ We use the following solution to construct a test equation:
 where \( \mu  \) and \( a \) are the constants from the original problem
 (\eqref{eq:original_eq}).
 Then we set \( \mu = 1/5, b = 3\pi/2, a = 1 \) and \( \varphi = \pi/4 \).
-The convergence plots (\ref{fig:conv_plot1} and \ref{fig:conv_plot2})
+The convergence plots (\ref{fig:conv_plot})
 align with the results from the theory section (\ref{thm:conv_order}).
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err1.pdf}
+    \includegraphics[width=\textwidth]{Images/plots/task1_error.pdf}
     \caption{As long as one of the step sizes (either \( k\) or \( h \)
-      is kept small enough, we get quadratic convergence.}
-    \label{fig:conv_plot1}
-\end{figure}
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err2.pdf}
-    \caption{Since we are solving the equation on the grid 
-      \( [0,1] \times [0,1] \) 
+      is kept small enough, we get quadratic convergence.
+      Since we are solving the equation on the grid 
+      \( [0,1] \times [0,1] \) it is reasonable to let
+      \( h=k \to 0 \).
     }
-    \label{fig:conv_plot2}
+    \label{fig:conv_plot}
 \end{figure}
