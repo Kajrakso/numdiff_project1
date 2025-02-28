@@ -234,7 +234,7 @@ We summarize our discussion in a theorem.
 \end{theorem}
 
 \subsection{Consistency}
-
+We also wish to show that the method is consistent. 
 \begin{lemma}
     \label{central_difference}
     $$\delta_x^2u_{m}^{n} = h^2\partial_x^2 u_{m}^{n} + \mathcal{O}(h^4)$$
@@ -260,13 +260,13 @@ We summarize our discussion in a theorem.
     For the boundaries, $\tau_0=\tau_{M+1}= 0$, since we have Dirichlet boundary conditions and the approximation is exact.
     For the inner points we rewrite (\ref{eq:scheme_explicit_eq}) to be an explicit equation for $U_m^*$
     $$ U_{m}^{*}= \frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}}.$$
-    This is then substituted into \ref{eq:scheme_implicit_eq} to remove $U_{m}^{*}$ from the equation
+    This is then substituted into (\ref{eq:scheme_implicit_eq}) to remove $U_{m}^{*}$ from the equation
     $$\frac{U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n}}{1+\frac{ka}{2}} = (1+ka)U_{m}^{n}+\frac{r}{2}\left( \frac{\delta_x^2(U_{m}^{n+1}+\frac{ka}{2}U_{m}^{n})}{1+\frac{ka}{2}}  + \delta_x^2 U_{m}^{n}\right).$$
     We then multiply by $(1+\frac{ka}{2})$ and rearrange the terms to
     $$ U_{m}^{n+1}=(1+ ka + \frac{k^2a^2}{2})U_{m}^{n} + \frac{r}{2}\left((1+ka)\delta_x^2U_{m}^{n} +\delta_x^2U_{m}^{n+1}\right).$$
     Then the approximations are replaced by $u$ and the local truncation error is therefore introduced
     $$ k\tau_m^n + u_{m}^{n+1} = (1+ ka + \frac{k^2a^2}{2})u_{m}^{n} + \frac{r}{2}\left((1+ka)\delta_x^2u_{m}^{n} +\delta_x^2u_{m}^{n+1}\right).$$
-    We then use lemma (\ref{central_difference}) for the central differences and Taylor expand around $u_{m}^{n}$
+    We then use lemma \ref{central_difference} for the central differences and Taylor expand around $u_{m}^{n}$
     \begin{align*}
         k \tau_m^n =& \left( 1 + ka +\frac{k^2a^2}{2}\right)u_{m}^{n} - u_{m}^{n+1}+\frac{\mu k}{2h^2} \left(h^2\partial_x^2 u_{m}^{n+1} + \left( 1+ka \right) h^2 \partial_x^2u_{m}^{n} + \mathcal{O}(h^4)\right) \\
         k \tau_m^n =& \left( 1 + ka + \frac{k^2a^2}{2}\right)u_{m}^{n} - u_{m}^{n} - k \partial_tu_{m}^{n} - \frac{k^2}{2} \partial_t^2 u_{m}^{n} + \mathcal{O}(k^3)  \\
@@ -277,7 +277,7 @@ We summarize our discussion in a theorem.
     The first three terms are simply (\ref{eq:original_eq}) with all terms moved to the right hand side. Some terms can also be rewritten using (\ref{eq:original_eq}), $\mu \partial_x^2u_{m}^{n} = \partial_t u_{m}^{n} - au_{m}^{n}$, yielding
     \begin{align*}
         \tau_m^n = \frac{ka^2}{2}u_{m}^{n}  - \frac{k}{2} \partial_t^2 u_{m}^{n} +& \frac{k}{2} \partial_t \left(\partial_t u_{m}^{n}   - au_{m}^{n} \right) + \frac{ka}{2} \left( \partial_t  u_{m}^{n} - a u_{m}^{n}\right)+ \mathcal{O}(h^2 + k^2) \\
-        \tau_m^n = \frac{ka^2}{2}u_{m}^{n} - \frac{ka^2}{2}u_{m}^{n}  -& \frac{k}{2} \partial_t^2 u_{m}^{n} + \frac{k}{2} \partial_t^2 u_{m}^{n} - \frac{ak}{2} \partial_t u_{m}^{n} + \frac{ka}{2} \partial_t  u_{m}^{n}+ \mathcal{O}(h^2 + k^2) \\
+        \tau_m^n = \frac{ka^2}{2}u_{m}^{n} - \frac{ka^2}{2}u_{m}^{n}  -& \frac{k}{2} \partial_t^2 u_{m}^{n} + \frac{k}{2} \partial_t^2 u_{m}^{n} - \frac{ka}{2} \partial_t u_{m}^{n} + \frac{ka}{2} \partial_t  u_{m}^{n}+ \mathcal{O}(h^2 + k^2) \\
         \tau_m^n =& \mathcal{O}(h^2 + k^2) \\
     \end{align*}
 \end{proof}
@@ -288,7 +288,7 @@ We summarize our discussion in a theorem.
 \end{corollary}
 
 \begin{proof}
-We use the definition of $\lVert\cdot\lVert_{2,h}$ and (\ref{consistent}) for an upper bound of $\lvert \tau_m^n\lvert$
+We use the definition of $\lVert\cdot\lVert_{2,h}$ and theorem \ref{consistent} for an upper bound of $\lvert \tau_m^n\lvert$
     $$\lVert\tau^s \lVert_{2, h} = \sqrt{h}\left( \sum_{i=0}^{M+1} \lvert\tau^s_i \lvert^2 \right)^\frac{1}{2} \leq \sqrt{h}\left( \sum_{i=0}^{M+1} A(k^2+h^2) \right)^\frac{1}{2} = \sqrt{h}\left[ (M+1) A^2(k^2+k^2)^2 \right]^\frac{1}{2}$$
     and using that $h = \frac{1}{M+1}$
     $$\lVert\tau^s \lVert_{2, h} = \frac{\sqrt{h}}{\sqrt{h}}A(k^2+h^2) = A(k^2+h^2).$$
@@ -304,52 +304,55 @@ We use the definition of $\lVert\cdot\lVert_{2,h}$ and (\ref{consistent}) for an
 
 
 \begin{theorem}
+  \label{thm:conv_order}
     The method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
 \end{theorem}
 
 \begin{proof}
-    The scheme can be written of the form
+    The scheme can be written in the form
     $$\left(I - \frac{r}{2}S \right)U_{m}^{n+1} = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)U_{m}^n$$
     or using $A = \left(I - \frac{r}{2}S \right)$ and $B = \left( \left(1+ka+\frac{1}{2}(ka)^2\right)I + \frac{1}{2}\left(1+ka\right)rS\right)$ as
     $$AU_{m}^{n+1} = BU_{m}^{n+1}.$$
     If we place $U_m^n - u_m^n$ into the equation instead, we get
     $$AE^{n+1} = BE^n - k\tau^n$$
-    exchanging $n+1$ with $n$, multiplying by $A^{-1}$, which exists given (\ref{lemma:existance_of_inverse})
+    exchanging $n+1$ with $n$, multiplying by $A^{-1}$, which exists given lemma \ref{lemma:existance_of_inverse}
     $$E^n = A^{-1}BE^{n-1} -kA^{-1}\tau^n$$
     we set $q^{n-1}= -kA^{-1}\tau^n$ and $C=A^{-1}B$
     $$E^n = CE^{n-1}+q^{n-1}$$
     and by using the term recursively, we get
     $$E^n = C^nE^{0}+C^{n-1}q^0 + C^{n-2}q^1 + \dots + C q^{n-2} +  q^{n-1}.$$
-    Taking the norm on both sides and using stability from (\ref{stability}) to give a bound $L$ for $\lVert C^n \lVert$
+    Taking the norm on both sides and using stability from theorem \ref{stability} to give a bound $L$ for $\lVert C^n \lVert$
     $$\lVert E^n\lVert  \leq L\sum_{s=0}^{n-1}\lVert q^s \lVert$$
     we the use that 
     $$\lVert q^s \lVert \leq k \lVert A^{-1} \lVert \lVert\tau^s \lVert \leq k \tilde{K} \lVert\tau^s \lVert$$
     and, using $nk\leq Nk=T$, obtain
     $$\lVert E^n \lVert \leq L \tilde{K}nk \max_{0\leq s \leq n-1} \lVert \tau^s\lVert \leq L \tilde{K}T\max_{0\leq s \leq n-1} \lVert \tau^s\lVert.$$
-    Using $\lVert \cdot \lVert_{2, h}$ as the norm we get by (\ref{corollary:norm_tau})
+    Using $\lVert \cdot \lVert_{2, h}$ as the norm we get by corollary \ref{corollary:norm_tau}
     $$\lVert E^n \lVert_{2, h} \leq L \tilde{K}TA(k^2+h^2)$$
 \end{proof}
 
 \subsection{Numerical experiments}
-We use the following test equation:
-\begin{align}
-  u_t &= \frac{1}{5}u_xx + 5 u \\
-  u(0, x) &= \sin (2\pi x) \\
-  u(t, 0) &= 0 \\
-  u(t, 1) &= 0
-\end{align}
-
-The solution is
+We use the following solution to construct a test equation:
 \begin{equation}
-  \label{eq:anal_sol}
-  u(t, x) = \text{e}^{-(4\pi^2 \mu - a)t}\sin(2\pi x)
+  \tilde{u}(t, x) = \text{e}^{-(\mu b + a)t} \sin (bx + \varphi)
 \end{equation}
-
-\begin{figure}[h]
+where \( \mu  \) and \( a \) are the constants from the original problem
+(\eqref{eq:original_eq}).
+Then we set \( \mu = 1/5, b = 3\pi/2, a = 1 \) and \( \varphi = \pi/4 \).
+The convergence plots (\ref{fig:conv_plot1} and \ref{fig:conv_plot2})
+align with the results from the theory section (\ref{thm:conv_order}).
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images/plots/temp_task1.pdf}
-    \caption{TEMP: convergence plot}
-    \label{fig:mesh1}
+    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err1.pdf}
+    \caption{As long as one of the step sizes (either \( k\) or \( h \)
+      is kept small enough, we get quadratic convergence.}
+    \label{fig:conv_plot1}
 \end{figure}
-
-TODO
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err2.pdf}
+    \caption{Since we are solving the equation on the grid 
+      \( [0,1] \times [0,1] \) 
+    }
+    \label{fig:conv_plot2}
+\end{figure}
