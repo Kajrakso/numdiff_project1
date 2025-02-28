@@ -21,7 +21,7 @@ class PlotAnimation:
         self.fig, self.axs = plt.subplots(1, 3, subplot_kw={"projection": "3d"})
 
         for ax in self.axs:
-            ax.set_zlim(0, 200)
+            ax.set_zlim(0, np.max(sol))
 
     def update(self, frame):
         for i in range(len(self.axs)):
@@ -68,13 +68,11 @@ def plot_state(
     fig.suptitle(f"Plot of the SIR-model at time {t[i_t]:.3f}", fontsize=16)
     fig.tight_layout()
     if save:
-        plt.savefig(f"./Images/plot-i_t={i_t}.png")
         plt.savefig(f"./Images/plot-i_t={i_t}.pdf")
     else:
         plt.show()
 
-
-if __name__ == "__main__":
+def sine_initial():
     N = 100
     M = 10_000
     S_0 = np.ones((N, N)) * 100
@@ -87,9 +85,8 @@ if __name__ == "__main__":
     S_0 /= total_num_people
     I_0 /= total_num_people
     R_0 /= total_num_people
-
-    beta = 10_000
-    gamma = 1
+    beta = np.ones((N + 2, N + 2)) * 10_000
+    gamma = 10
     mu_I = 5e-2
     mu_S = 1e-2
 
@@ -102,3 +99,7 @@ if __name__ == "__main__":
     # plt.plot(t, u[:, 1, 10, 10])
     # plt.plot(t, u[:, 2, 10, 10])
     # plt.show()
+
+
+if __name__ == "__main__":
+    sine_initial()

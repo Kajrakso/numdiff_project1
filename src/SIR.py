@@ -1,3 +1,4 @@
+from typing import Union
 import scipy as sc
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,7 +17,7 @@ def solve(
     S_0: np.ndarray,
     I_0: np.ndarray,
     R_0: np.ndarray,
-    beta: float,
+    beta: Union[np.ndarray, float],
     gamma: float,
     mu_I: float,
     mu_S: float,
@@ -29,6 +30,7 @@ def solve(
     (Uses forward Euler for the time step)
     ---
     Args:
+        beta (Union[np.ndarray, float]): If array its size needs to be (N+2, N+2)
 
     Returns:
 
