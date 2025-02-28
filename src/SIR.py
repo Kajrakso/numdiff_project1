@@ -73,7 +73,7 @@ def solve(
         U[i + 1, :, :, 0] = U[i + 1, :, :, 2]
         U[i + 1, :, :, -1] = U[i + 1, :, :, -3]
 
-    return U, np.linspace(0, t_end, M)
+    return U, np.linspace(0, t_end, M+1)
 
 
 def laplacian(A: np.ndarray) -> np.ndarray:
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     mu_I = 1e-2
     mu_S = 1e-2
 
-    u = solve(1, 1, N, M, S_0, I_0, R_0, beta, gamma, mu_I, mu_S)
+    u, t = solve(1, 1, N, M, S_0, I_0, R_0, beta, gamma, mu_I, mu_S)
     # print(u)
     plt.plot(u[:, 0, 2, 2], label="S")
     plt.plot(u[:, 1, 2, 2], label="I")
