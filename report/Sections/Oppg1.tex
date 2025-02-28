@@ -304,6 +304,7 @@ We use the definition of $\lVert\cdot\lVert_{2,h}$ and (\ref{consistent}) for an
 
 
 \begin{theorem}
+  \label{thm:conv_order}
     The method is convergent of order $h^2+k^2$ with respect to $\lVert\cdot \lVert_{2, h}$.
 \end{theorem}
 
@@ -331,25 +332,27 @@ We use the definition of $\lVert\cdot\lVert_{2,h}$ and (\ref{consistent}) for an
 \end{proof}
 
 \subsection{Numerical experiments}
-We use the following test equation:
-\begin{align}
-  u_t &= \frac{1}{5}u_xx + 5 u \\
-  u(0, x) &= \sin (2\pi x) \\
-  u(t, 0) &= 0 \\
-  u(t, 1) &= 0
-\end{align}
-
-The solution is
+We use the following solution to construct a test equation:
 \begin{equation}
-  \label{eq:anal_sol}
-  u(t, x) = \text{e}^{-(4\pi^2 \mu - a)t}\sin(2\pi x)
+  \tilde{u}(t, x) = \text{e}^{-(\mu b + a)t} \sin (bx + \varphi)
 \end{equation}
-
-\begin{figure}[h]
+where \( \mu  \) and \( a \) are the constants from the original problem
+(\eqref{eq:original_eq}).
+Then we set \( \mu = 1/5, b = 3\pi/2, a = 1 \) and \( \varphi = \pi/4 \).
+The convergence plots (\ref{fig:conv_plot1} and \ref{fig:conv_plot2})
+align with the results from the theory section (\ref{thm:conv_order}).
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images/plots/temp_task1.pdf}
-    \caption{TEMP: convergence plot}
-    \label{fig:mesh1}
+    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err1.pdf}
+    \caption{As long as one of the step sizes (either \( k\) or \( h \)
+      is kept small enough, we get quadratic convergence.}
+    \label{fig:conv_plot1}
 \end{figure}
-
-TODO
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Images/plots/task1_err2.pdf}
+    \caption{Since we are solving the equation on the grid 
+      \( [0,1] \times [0,1] \) 
+    }
+    \label{fig:conv_plot2}
+\end{figure}
