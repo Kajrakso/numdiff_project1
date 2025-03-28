@@ -1,1 +1,3 @@
-# numdiff_project1
+# Numdiff project 1
+
+Solving reaction-diffusion equations with finite difference methods.
